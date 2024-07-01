@@ -1,42 +1,39 @@
-from PyQt5 import QtWidgets, uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QTextEdit, QPushButton, QTableWidget, QTableWidgetItem
+from PyQt6 import QtWidgets, uic
+from PyQt6.QtWidgets import QApplication, QMainWindow
+from PyQt6.QtWidgets import QWidget, QTextEdit, QPushButton, QTable-Widget,QTableWidgetItem
+
 import sys
-from library import *
+from library import*
 
 app = QtWidgets.QApplication([])
 win = uic.loadUi("рабочие.ui")
 
-gr = grup()
-gr.read_data_from_file("text.txt")
-print("!!!", gr.count)
+Gr = Grup()
+Gr.read_data_from_file("text.txt")
+print("Количество: ", Gr.count)
 
-sti = QtWidgets.QStandardItemModel(parent=win)
-win.tableWidget = QtWidgets.QModelIndex()
-win.label.setAlignment(QtCore.Qt.AlignHCenter)
 
-def btn_load_table():
-    win.tableWidget.setRowCount(gr.count)
+data = []
+data.append(('Заполнить', 'QTableWidget'))
+data.append(('с данными', 'в Python'))
+data.append(('очень', 'просто'))
+win.tableWidget.setRowCount(Gr.count)
+
+
+def btnLoadTable():
     row = 0
-    for x in gr.a:
-        print(1)
-
-        win.tableWidget.setItem(row, 0, QTableWidgetItem(gr.a[x].fam+' '+gr.a[x].name+' '+gr.a[x].otchestvo))
-        win.tableWidget.setItem(row, 1, QTableWidgetItem(str(gr.a[x].year)))
-        win.tableWidget.setItem(row, 2, QTableWidgetItem(gr.a[x].city))
-        win.tableWidget.setItem(row, 3, QTableWidgetItem(str(gr.a[x].sb_inf)))
-        win.tableWidget.setItem(row, 4, QTableWidgetItem(str(gr.a[x].sb_math))
+    for x in Gr.A:
+       
+        win.tableWidget.setItem(row, 0, QTableWidgetItem(Gr.A[x].fam+' '+Gr.A[x].name+' '+Gr.A[x].otchestvo))
+        win.tableWidget.setItem(row, 1, QTableWidgetItem(Gr.A[x].number))
+        win.tableWidget.setItem(row, 2, QTableWidgetItem(Gr.A[x].days))
+        win.tableWidget.setItem(row, 3, QTableWidgetItem(Gr.A[x].moneys))
         row += 1
+    
 
-def btn_append_person():
-    str_person = win.lineEdit.text()
-    gr.append_person(str_person)
-    win.tableWidget.clear()
-    btn_load_table()
+    
+win.pushButton.clicked.connect(btnLoadTable)
 
-win.pushButton.clicked.connect(btn_load_table)
-print(gr.a[0].get_person_for_table())
-
-win.pushButton_3.clicked.connect(btn_append_person)
 
 win.show()
 sys.exit(app.exec())
